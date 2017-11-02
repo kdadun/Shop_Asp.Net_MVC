@@ -1,0 +1,31 @@
+﻿@model Sklep_Internetowy.Models.Product
+@*@{
+        ViewBag.Title = "Produkty";
+    }*@
+
+
+<h3 style="color:green;">Najtańszy produkt w ofercie sklepu</h3>
+<table class="col-md-6 col-md-offset-1" style="text-align: center; ">
+    <tr>
+        <td>
+
+            <a style="" href="@Url.Action("Details", "Products", new { id = Model.Id },null)">
+
+                <h3 style="text-align:center;">@Model.Name </h3>
+            </a>
+            <div class="col-md-4">
+                @{
+                    var base64 = Convert.ToBase64String(Model.Image);
+                    var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                }
+                <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                    <img class="img-responsive" src="@imgSrc" @*style="max-width:500px;max-height:500px"*@ />
+                </div>
+            </div>
+
+            <br />
+            <h6 style="text-align:center;font-family: Impact, Charcoal, sans-serif;font-size:20px;color:red;">Cena produktu: @Model.Price Zł</h6>
+
+</table>
+
+

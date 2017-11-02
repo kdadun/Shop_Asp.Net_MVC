@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Category>
+
+@{
+    ViewBag.Title = "Lista kategorii";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kategorie produktów</h2>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <input type="button" class="btn btn-info" value="Stwórz nową kategorię" onclick="location.href='@Url.Action("Create", "Categories")'" />
+    </p>
+}
+<div class="row">
+    @foreach (var category in Model)
+    {
+        <div class="col-md-4">
+            <table class="table table-bordered ">
+                <tr>
+                
+                    <td style="text-align: center; background-color: #C0C0C0;">
+                          @if(User.IsInRole("Admin"))
+                            {
+                             <a href="@Url.Action("ListOfProductsForAdmin", "Products", new { categoryId = category.Id },null)">
+                        
+                                       <h3 style="text-align:center;">@category.Name </h3>
+                                       <h5>(Ilość Produktów: @category.Products.Count())</h5>
+
+                                     
+                                           @Html.ActionLink("Edytuj", "Edit", new { id = category.Id })
+                                           <br />
+                                           @Html.ActionLink("Usuń kategorię", "Delete", new { id = category.Id })
+   
+                                   </a>
+                            }
+                          else
+                          {
+                            <a href="@Url.Action("ListOfProductsForAdmin", "Products", new { categoryId = category.Id }, null)">
+                                <h3 style="text-align:center;">@category.Name </h3>
+                                <h5>(Ilość Produktów: @category.Products.Count())</h5>
+
+                                </a>
+
+                                }
+</td>
+
+
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿@model Sklep_Internetowy.Models.Review
+
+@{
+    ViewBag.Title = "Edytuj swoją opinie odnośnie produktu";
+}
+@{
+
+    var comments = (IEnumerable<Sklep_Internetowy.Models.Review>)ViewBag.Comments;
+    var ratingSum = ViewBag.RatingSum;
+    var ratingCount = ViewBag.RatingCount;
+
+    decimal rating = 0;
+    if (ratingCount > 0)
+    {
+        rating = (ratingSum / ratingCount);
+    }
+    var totalRating = decimal.Parse(rating.ToString());
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Opinie </h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.Partial("_CommentBox")
+        @Html.HiddenFor(model => model.Id)
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment)
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.ProductId)
+        @Html.HiddenFor(model => model.NameUser)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Zapisz" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js">
+
+    function CalculateStars() {
+        for (var i = 1; i <= @totalRating; i++) {
+            $("#sRate" + i).attr('class', 'starGlowN');
+        }
+    }
+    $(function(){
+        CalculateStars();
+    });
+</script>

@@ -1,0 +1,97 @@
+﻿@model Sklep_Internetowy.ViewModel.CartViewModel
+@{
+    ViewBag.Title = "Lista zamówień ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<section class="content-section">
+    <div class="section-header" style="margin-bottom: 0px;">
+        <h1>Twój koszyk zakupów</h1>
+    </div>
+    <table id="cart-table">
+        @foreach (var cartIteam in Model.CartItems)
+        {
+            <tr id="cart-row-@cartIteam.Product.Id">
+                <td>
+                    <a href="@Url.Action("Details", "Products", new { id = cartIteam.Product.Id })">
+                        @{
+            var base64 = Convert.ToBase64String(cartIteam.Product.Image);
+            var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        <div class="imageClip" style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                            <img class="img-responsive" src="@imgSrc" style="max-width:200px;max-height:200px" />
+                        </div>
+
+                    </a>
+                </td>
+                <td><a href="@Url.Action("Details", "Products", new { id = cartIteam.Product.Id })">@cartIteam.Product.Name </a></td>
+                <td>Ilość: <span id="cart-item-count-@cartIteam.Product.Id">@cartIteam.Quantity</span></td>
+                <td>@String.Format("{0:0.##}", cartIteam.TotalPrice) zł</td>
+                <td><a class="removeProduct" data-id="@cartIteam.Product.Id" href="#">Usuń</a></td>
+            </tr>
+        }
+        <tr id="cart-empty-message" @if (Model.CartItems != null && Model.CartItems.Count > 0) { <text> class="hidden" </text>          }>
+            <td>Twój koszyk jest pusty. Warto coś do niego dodać?</td>
+        </tr>
+    </table>
+    <div id="total-price">
+        Razem: <span id="total-price-value">@String.Format("{0:0.##}", Model.TotalPrice)</span> zł
+    </div>
+
+    <div class="section-button-container">
+        <a class="btn btn-primary " href="@Url.Action("Index","Home")">Kontynuuj zakupy</a>
+        @if (Model.TotalPrice > 0)
+        {
+            <a class="btn btn-success " id="cart-button-checkout" href="@Url.Action("Checkout", "Cart")">Kupuję</a>
+        }
+    </div>
+</section>
+
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".removeProduct").click(function () {
+
+            var recordToDelete = $(this).attr("data-id");
+
+            if (recordToDelete != '') {
+
+
+                $.post("/Cart/RemoveFromCart", { "productId": recordToDelete },
+                    function (response) {
+
+                        if (response.RemovedItemCount == 0) {
+
+                            $('#cart-row-' + response.RemoveItemId).fadeOut('slow', function () {
+                                if (response.CartItemsCount == 0) {
+                                    $("#cart-empty-message").removeClass("hidden");
+                                }
+                            });
+                        } else {
+                            $('#cart-item-count-' + response.RemoveItemId).text(response.RemovedItemCount);
+                        }
+
+                        if (response.CartItemsCount == 0) {
+                            $('#cart-button-checkout').addClass('hidden');
+                            $('#total-price').addClass('invisible');
+                        }
+
+                        $('#total-price-value').text(response.CartTotal);
+                        $('#cart-header-items-count').text(response.CartItemsCount);
+
+                    });
+
+                return false;
+            }
+        });
+
+    });
+
+</script>
+

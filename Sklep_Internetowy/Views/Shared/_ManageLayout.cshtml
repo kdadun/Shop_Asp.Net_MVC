@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    @if (User.IsInRole("Admin"))
+    {
+        <nav class="  navbar navbar-inverse navbar-fixed-top navbar-custom">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    @Html.ActionLink("Sklep internetowy", "Index", "Home", null, new { @class = "navbar-brand" })
+                    @Html.ActionLink("Panel Administratora", "Index", "Manage", null, new { @class = "navbar-brand" })
+                </div>
+                <ul class="nav navbar-nav">
+
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zamówienia <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Wykres sumy zamówień z danego miesiąca", "Test", "Manage")</li>
+                            <li>@Html.ActionLink("Zmiana statusu zamówienia", "OrderList", "Manage")</li>
+                            <li>@Html.ActionLink("Lista zamówień", "ListOrdersToExcel", "Manage")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Lista produktów dla administratora", "ListOfProductsForAdmin", "Products")</li>
+                    <li>@Html.ActionLink("Lista zgłoszeń klientów", "ListCustomerRequests", "Manage")</li>
+                </ul>
+
+
+
+            </div>
+            @Html.Partial("_LoginPartial")
+        </nav>
+
+
+    }
+    else
+    {
+
+        <nav class="  navbar navbar-inverse navbar-fixed-top navbar-user">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    @Html.ActionLink("Sklep internetowy", "Index", "Home", null, new { @class = "navbar-brand" })
+                </div>
+
+                <ul class="nav navbar-nav">
+
+
+                    <li> @Html.ActionLink("Panel Klienta", "Index", "Manage", null, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("Zamówienia", "OrderList", "Manage")</li>
+                    <li>@Html.ActionLink("Formularz kontaktowy", "ContactForm", "Manage")</li>
+                    <li style="color:white;position: relative; left:10px; top: 14px;">Ilość produktów w koszyku (@Html.Action("GetCartIteamsCount", "Cart")) </li>
+
+                </ul>
+
+
+            </div>
+            @Html.Partial("_LoginPartial")
+        </nav>
+    }
+    <div>
+        @RenderBody()
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

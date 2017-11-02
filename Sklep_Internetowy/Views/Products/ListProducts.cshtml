@@ -1,0 +1,62 @@
+﻿@*@using PagedList
+    @using PagedList.Mvc*@
+@model IEnumerable<Sklep_Internetowy.Models.Product>
+
+@{
+    ViewBag.Title = "Produkty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Produkty</h2>
+
+<form method="get">
+    <input type="text" name="search" />
+    <input type="submit" value="Wyszukaj produkt" class="btn btn-success" />
+</form>
+@foreach (var product in Model)
+{
+
+    <table class="col-md-3 col-md-offset-1" style="text-align: center; ">
+        <tr>
+            <td>
+
+                <a style="" href="@Url.Action("Details", "Products", new { id = product.Id },null)">
+
+                    <h3 style="text-align:center;">@product.Name </h3>
+                </a>
+
+                <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+
+
+                    @{
+                        var base64 = Convert.ToBase64String(product.Image);
+                        var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    <div class="imageClip" style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                        <img class="img-responsive" src="@imgSrc" style="max-width:200px;max-height:200px" />
+                    </div>
+
+                </div>
+
+                <br />
+                <h6 style="text-align:center;font-family: Impact, Charcoal, sans-serif;font-size:20px;color:red;">Cena produktu: @product.Price Zł</h6>
+                <h4>Ilość ocen produktu: @product.Rewiews.Count()</h4>
+
+                @Html.ActionLink("Oceń produkt i dodaj komentarz", "Index", "Review", new { id = product.Id }, null)
+
+                
+            </td>
+
+        </tr>
+
+
+
+    </table>
+
+}
+<div class="col-md-8 col-md-offset-5 "></div>
+@*<div class="col-md-8 ">
+        @Html.PagedListPager(Model, page => Url.Action("ListOfProducts", new { page }))
+
+    </div>*@
+

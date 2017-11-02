@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Order>
+@{
+    ViewBag.Title = "ListOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;">Suma zamówień z danego miesiąca</h2>
+
+
+
+<table style="width:100%">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><b>Całkowity koszt zamówień:</b> @item.totalPrice</td>
+            <td><b>Miesiąc:</b> @item.dateCreated.ToString("yyyy-MM")</td>
+
+        </tr>
+    }
+</table>
+

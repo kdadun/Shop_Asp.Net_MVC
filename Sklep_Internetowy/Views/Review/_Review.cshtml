@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Review>
+<ul>
+    @foreach (var item in Model)
+    {
+        <h5 style="color:red;">Ocena produktu:</h5>
+        <li>
+            @for (var i = 1; i <= item.Rating; i++)
+            {
+                <span class="starGlowN"></span>
+            }
+            @for (var i = (item.Rating + 1); i <= 5; i++)
+            {
+                <span class="starFadeN"></span>
+            }
+            <br />
+            <small style="font-family: Charcoal, sans-serif;color:black;">
+                Nazwa autora:@item.NameUser @if (User.Identity != null && item.NameUser == User.Identity.Name)
+                {
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.Id })}
+            </small>
+            <h5>Data utworzenia komentarza: @item.DateCreated </h5>
+            <br />
+            <h5 style="color:red;">Komentarz do produktu:</h5>
+            <p style="font-family: Charcoal, sans-serif;">@Html.DisplayFor(modelItem => item.Comment)</p>
+        </li>
+    }
+</ul>
+
+

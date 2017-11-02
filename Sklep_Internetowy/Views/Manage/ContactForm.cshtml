@@ -1,0 +1,61 @@
+﻿@model Sklep_Internetowy.Models.Contact
+@{
+    ViewBag.Title = "Formularz kontaktowy";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+<h2 style="text-align:center;">Formularz kontaktkowy</h2>
+<br /><br />
+<div class="jumbotron">
+
+    <p style="text-align:center;">
+        Dzięki temu formularzowi możesz szybko rozwiązać swój problem na stronie naszej witryny. Administrator po otrzymaniu zgłoszenia szybko się z tobą skontaktuje.
+    </p>
+</div>
+
+<div style="margin-left:300px;">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstNameAndLastName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.FirstNameAndLastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstNameAndLastName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MessageContact, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.MessageContact, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MessageContact)
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Wyślij zgłoszenie" class="btn btn-default" />
+            </div>
+        </div>
+
+    }
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

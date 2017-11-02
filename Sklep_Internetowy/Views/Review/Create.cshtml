@@ -1,0 +1,61 @@
+﻿@model Sklep_Internetowy.Models.Review
+
+@{
+    ViewBag.Title = "Stwórz opinię odnośnie produktu";
+}
+@{
+
+    var comments = (IEnumerable<Sklep_Internetowy.Models.Review>)ViewBag.Comments;
+    var ratingSum = ViewBag.RatingSum;
+    var ratingCount = ViewBag.RatingCount;
+
+    decimal rating = 0;
+    if (ratingCount > 0)
+    {
+        rating = (ratingSum / ratingCount);
+    }
+    var totalRating = decimal.Parse(rating.ToString());
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Dodaj komentarz i oceń produkt </h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.Partial("_CommentBox")
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment)
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Stwórz opinię" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js">
+    $(function(){
+        CalculateStars();
+    });
+
+    function CalculateStars() {
+        for (var i = 1; i <= @totalRating; i++) {
+            $("#sRate" + i).attr('class', 'starGlowN');
+        }
+    }
+
+
+
+</script>
+

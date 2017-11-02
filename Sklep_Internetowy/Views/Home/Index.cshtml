@@ -1,0 +1,66 @@
+﻿@model Sklep_Internetowy.ViewModel.HomeViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+@Html.Action("CheapestProduct", "Home")
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+<div class="row">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="col-md-4">
+            <table class="table table-bordered ">
+                <tr>
+                    <td>
+                        <a href="@Url.Action("ListOfProductsForAdmin", "Products", new { categoryId = category.Id },null)">
+                            <h3 style="text-align:center;">@category.Name </h3>
+                        </a>
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    }
+</div>
+<br /><br />
+<h2 style="text-align:center;">Lista Produktów w promocyjnej cenie</h2>
+<br /><br />
+
+@foreach (var product in Model.Products)
+{
+
+    <table class="col-md-4" style="text-align: center; ">
+        <tr>
+            <td>
+                <a style="" href="@Url.Action("Details", "Products", new { id = product.Id })">
+                    <h3 style="text-align:center;">@product.Name </h3>
+                </a>
+
+                <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                    @{
+                        var base64 = Convert.ToBase64String(product.Image);
+                        var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    <div class="imageClip" style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                        <img class="img-responsive" src="@imgSrc" style="max-width:200px;max-height:200px" />
+                    </div>
+                </div>
+
+                <br />
+                <h6 style="text-align:center;font-family: Impact, Charcoal, sans-serif;font-size:20px;color:red;">Cena produktu: @product.Price zł</h6>
+            </td>
+
+        </tr>
+
+    </table>
+
+
+}
+
+<br />
+<br />

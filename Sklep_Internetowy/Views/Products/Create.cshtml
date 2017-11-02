@@ -1,0 +1,102 @@
+﻿@model Sklep_Internetowy.ViewModel.CreateProductViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Stwórz produkt";
+}
+
+<h2>Dodaj produkt do sklepu</h2>
+
+
+@using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row" style="">
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DetailedDescription, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DetailedDescription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DetailedDescription)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Price)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsNewProduct, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsNewProduct)
+                    @Html.ValidationMessageFor(model => model.IsNewProduct)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PromotionalProduct, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PromotionalProduct)
+                    @Html.ValidationMessageFor(model => model.PromotionalProduct)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CategoryId, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CategoryId, Model.Categories)
+                    @Html.ValidationMessageFor(model => model.CategoryId)
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.NameFileImage)
+
+            <div class="form-group" style="margin-left:100px;">
+                <div class="editor-field">
+                    <input type="file" name="productImg" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Dodaj produkt" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Wróć do listy produktów", "ListOfProductsForAdmin")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

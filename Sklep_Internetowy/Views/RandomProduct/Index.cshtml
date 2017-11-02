@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Product>
+@{
+    ViewBag.Title = "Losowy Produkt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<body>
+
+    <div id="div1">
+        @foreach (var randomProduct in Model)
+        {
+            <table class="col-md-3 col-md-offset-1" style="text-align: center; ">
+                <tr>
+                    <td>
+
+                        <a style="" href="@Url.Action("Details", "Products", new { id = randomProduct.Id })">
+
+                            <h3 style="text-align:center;">@randomProduct.Name </h3>
+                        </a>
+
+                        <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+
+                            @{
+                                var base64 = Convert.ToBase64String(randomProduct.Image);
+                                var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            <div class="imageClip" style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+                                <img class="img-responsive" src="@imgSrc" style="max-width:200px;max-height:200px" />
+                            </div>
+                        </div>
+
+                        <h6 style="text-align:center;font-family: Impact, Charcoal, sans-serif;font-size:20px;color:red;">Cena produktu: @randomProduct.Price Zł</h6>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+        }
+
+
+
+
+    </div>
+    <div class="col-md-6">
+        <input type="button" class="btn btn-success" id="button1" value="Wylosuj produkt" />
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#button1").click(function () {
+                $("#div1").load('@Url.Action("Index")');
+                $("#button1").hide();
+            });
+        });
+    </script>
+
+</body>
+
+

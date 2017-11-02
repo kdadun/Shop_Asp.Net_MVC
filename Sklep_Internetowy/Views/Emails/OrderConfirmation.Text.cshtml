@@ -1,0 +1,18 @@
+﻿@model Sklep_Internetowy.ViewModel.OrderConfirmationEmail
+Content-Type: text/plain; charset=utf-8
+
+Dziękujemy!
+
+Złożyłeś zamówienie w sklepie internetowym. Postaramy się, aby zamówione produkty dotarły do Ciebie jak najszybciej.
+
+Prosimy o przelanie kwoty @Model.Cost zł, tytułem: "zamówienie nr @Model.OrderNumber" na nasze konto bankowe:
+
+Sklep internetowy
+ul. Nowa 25
+00-222 Warszawa
+PKO BP 10 1001 2200 05511 1100 0011
+
+Zaraz po otrzymaniu środków wyślemy przesyłkę kurierską pod adres: @Model.FullAddress.
+
+Dziękujemy i zapraszamy ponownie!
+Sklep internetowy 

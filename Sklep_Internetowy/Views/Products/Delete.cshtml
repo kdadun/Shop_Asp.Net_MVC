@@ -1,0 +1,74 @@
+﻿@model Sklep_Internetowy.Models.Product
+
+@{
+    ViewBag.Title = "Usuń produkt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h3>Czy napewno chcesz usunąc ten produkt?</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DetailedDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DetailedDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsNewProduct)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsNewProduct)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PromotionalProduct)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromotionalProduct)
+        </dd>
+      
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń produkt" class="btn btn-default" /> |
+            @Html.ActionLink("Wróć do listy produktów", "ListOfProductsForAdmin")
+        </div>
+    }
+</div>

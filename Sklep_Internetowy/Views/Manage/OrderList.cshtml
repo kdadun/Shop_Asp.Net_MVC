@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Order>
+@{
+    ViewBag.Title = "Zamówienia";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div>
+
+    <hr />
+
+    <h2 style="text-align:center;">Zamówienia</h2>
+    <div>
+
+        @if (Model.Any())
+        {
+
+            <table id="orders-table">
+
+                @foreach (var order in Model)
+                {
+                    <tr @if (order.orderState == Sklep_Internetowy.Models.OrderState.Completed) { <text> class="completed" </text>         }>
+
+                        <td>
+                            <strong>Nr zamówienia: </strong>@order.orderId
+                        </td>
+                        <td>
+                            <strong>Data utworzenia : </strong>
+                            @order.dateCreated.ToString("dd-MM-yyyy")
+                        </td>
+                        <td>
+                            <strong>Stan: </strong><br />
+
+                            @if (ViewBag.UserIsAdmin)
+                            {
+                                using (Html.BeginForm("ChangeOrderState", "Manage"))
+                                {
+                                    @Html.HiddenFor(o => order.orderId)
+                                    @Html.EnumDropDownListFor(o => order.orderState, new { @class = "orderstateddl" })
+                                }
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(o => order.orderState)
+                            }
+
+                        </td>
+
+                        <td>
+                            <strong>Dane wysyłkowe:</strong><br />
+                            @order.firstName @order.lastName<br />
+                            @order.address<br />
+
+                        </td>
+                        <td>
+                            <strong>Uwagi: </strong><br />
+                            @order.comment
+                        </td>
+                        <td>
+                            <strong>Łączny koszt:</strong> @order.totalPrice zł
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <section>
+                                <ul class="ThreeColumnsStaticCoversList large-cover-list-bottom">
+
+                                    @foreach (var orderItem in order.OrderIteams)
+                                    {
+                                        <li>
+                                            <article>
+                                                <a class="productdetailslink" href="@Url.Action("Details", "Products", new { id = orderItem.ProductId},null)">
+                                                    <h6> @orderItem.Product.Name</h6>
+                                                    <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+
+
+                                                        @{
+                                        var base64 = Convert.ToBase64String(orderItem.Product.Image);
+                                        var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                                                        }
+                                                        <div class="imageClip" style="padding-left: 30px;  padding-right: 60px; padding-bottom:0px;">
+                                                            <img class="img-responsive" src="@imgSrc" style="max-width:200px;max-height:200px" />
+                                                        </div>
+                                                        <br /><br />
+                                                    </div>
+                                                    <h1>
+                                                        @orderItem.Product.Name <br />
+                                                        <strong>sztuk: @orderItem.Quantity, łącznie: @(orderItem.Quantity * @orderItem.UnitPrice)  zł</strong>
+                                                    </h1>
+                                                </a>
+                                            </article>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                            </section>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+
+
+
+                }
+
+
+            </table>
+        }
+        else
+        {
+            <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+                Brak zamówień.
+            </div>
+        }
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(".orderstateddl").on('change', function (e) {
+        //e.preventDefault();
+
+        var f = $(this.form);
+        var tr = f.closest("tr");
+
+        var action = f.attr("action");
+        var serializedForm = f.serialize();
+        $.post(action, serializedForm).done(function (data) {
+            if (data == '@Sklep_Internetowy.Models.OrderState.Completed.ToString()') {
+                tr.addClass("completed")
+            }
+            else {
+                tr.removeClass("completed");
+            }
+
+          });
+    });
+</script>
+
+

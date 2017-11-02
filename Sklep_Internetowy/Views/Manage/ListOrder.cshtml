@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Order>
+@{
+    ViewBag.Title = "ListOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;">Koszt zamówionych produktów z danego miesiąca</h2>
+
+
+
+<table style="width:100%">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><b>Całkowity koszt zamówień:</b> @item.totalPrice</td>
+            <td><b>Miesiąc:</b> @item.dateCreated.ToString("yyyy-MM")</td>
+
+        </tr>
+    }
+</table>
+
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<style>
+    #chart_display {
+        height: 400px;
+        width: 650px;
+    }
+</style>
+<script>
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+</script>
+<script>
+    var chartData;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Manage/ListProducts",
+            data: "{}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; chartset=utf-8",
+            success: function (data) {
+                debugger;
+                chartData = data;
+
+                var data = new google.visualization.DataTable();
+
+                data.addColumn('string', 'Nazwa Produktu');
+                data.addColumn('number', 'Cena');
+            
+
+                for (var i = 0; i < chartData.length; i++) {
+                    data.addRow([chartData[i].Name, chartData[i].Price]);
+                }
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_display'));
+                chart.draw(data,
+                      {
+                          title: " ",
+                          position: "top",
+                          fontsize: "14px",
+                          chartArea: { width: '50%' },
+                      });
+            },
+
+            error: function () {
+                alert("Błąd wczytywania danych! Proszę sprubuj ponownie.");
+            }
+        });
+    });
+</script>
+
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Wykres
+        </div>
+        <div class="panel-body">
+            <div id="chart_display"></div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@model Sklep_Internetowy.Models.Product
+
+@{
+    ViewBag.Title = "Lista opinni odnośnie produktów";
+}
+
+
+
+<h2 style="text-align:left;">Nazwa produktu: @Model.Name</h2>
+<div class="col-md-4 ">
+    <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+
+        @{
+            var base64 = Convert.ToBase64String(Model.Image);
+            var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+        }
+        <div style="padding-left: 30px;  padding-right: 0px; padding-bottom:0px;">
+            <img class="img-responsive" src="@imgSrc" @*style="max-width:500px;max-height:500px"*@ />
+        </div>
+    </div>
+</div>
+
+<p>
+     @if (!User.IsInRole("Admin")) {
+    <input type="button" class="btn btn-info" value="Dodaj opinię odnośnie tego produktu " onclick="location.href='@Url.Action("Create", "Review", new { productId = Model.Id })'" />
+     }
+    <input type="button" class="btn btn-success" value="Wróć do listy produktów " onclick="location.href='@Url.Action("ListOfProductsForAdmin", "Products")'" />
+</p>
+<div class="col-md-4 ">
+    @Html.Partial("_Review", Model.Rewiews)
+</div>

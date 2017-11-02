@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Sklep_Internetowy.Models.Order>
+@{
+    ViewBag.Title = "ListOrder2";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<h2 style="text-align:center;">Koszt zamówionych produktów z danego miesiąca</h2>
+
+
+
+@*<table style="width:100%">*@
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.totalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.totalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dateCreated.ToString("yyyy-MM"))
+            </td>
+        </tr>
+    }
+
+</table>
+

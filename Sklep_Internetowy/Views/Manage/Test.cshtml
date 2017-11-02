@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+
+@Html.Action("ListOrder2", "Manage")
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<style>
+    #chart_display {
+        height: 400px;
+        width: 650px;
+    }
+</style>
+<script>
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+</script>
+<script>
+    var chartData;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Manage/ListOrder",
+            data: "{}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; chartset=utf-8",
+            success: function (data) {
+                debugger;
+                chartData = data;
+
+                var data = new google.visualization.DataTable();
+
+                data.addColumn('date', 'Miesiąc');
+                data.addColumn('number', 'Suma mięsięcznych zamówień');
+                //var monthYearFormatter = new google.visualization.DateFormat({
+                //    pattern: "MMM yyyy"
+                //});
+                //monthYearFormatter.format(data, 0);
+
+                for (var i = 0; i < chartData.length; i++) {
+                    var rowDate;
+
+
+                    rowDate = chartData[i].dateCreated;
+                    rowDate = rowDate.replace('/', 'new ');
+                    rowDate = rowDate.replace('/', '');
+
+                    rowDate = eval(rowDate);
+
+                    data.addRow([rowDate, chartData[i].TotalPrice]);
+                }
+
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_display'));
+                chart.draw(data,
+                      {
+                          title: " ",
+                          position: "top",
+                          fontsize: "14px",
+                          hAxis: {
+                              //format: 'yyyy-MM-dd'
+                              format:'yyyy-MM'
+                          },
+                          chartArea: { width: '50%' },
+                      });
+            },
+
+            error: function () {
+                alert("Błąd wczytywania danych! Proszę sprubuj ponownie.");
+            }
+        });
+    });
+</script>
+
+<div class="container">
+    <div class="panel panel-info">
+
+        <div class="panel-body">
+            <div id="chart_display"></div>
+        </div>
+
+    </div>
+</div>
