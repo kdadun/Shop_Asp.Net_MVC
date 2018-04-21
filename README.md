@@ -1,4 +1,4 @@
-# Online shop created in ASP.Net MVC
+# Online shop created in ASP.NET MVC
 
 
 
